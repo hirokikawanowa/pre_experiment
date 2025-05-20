@@ -1,0 +1,20 @@
+# Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild*/
+UserSettings/
+Logs/
+
+# Obsidian
+.obsidian/workspace.json
+
+# OS・IDE
+.DS_Store
+Thumbs.db
+*.csproj
+*.sln
+*.user
+
+*.apk
+*.fbx
