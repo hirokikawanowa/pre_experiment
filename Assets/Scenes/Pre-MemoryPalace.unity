@@ -624,7 +624,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1527768264}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1527768269
 Camera:
   m_ObjectHideFlags: 0
@@ -702,7 +702,7 @@ Transform:
   m_GameObject: {fileID: 1843430105}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.91684, y: 0, z: -3.82404}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -720,10 +720,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12e61bc9a924bdb49b3921c815a56941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorPrefab: {fileID: 6447614835294196024, guid: b59fc777398b00a4882180b61ecfd836, type: 3}
-  wallPrefab: {fileID: 6384333911944792548, guid: 31eedc259b1e61c448acdcebf9aaa6e7, type: 3}
-  doorPrefab: {fileID: 3415472457665389115, guid: f14ade22f380f9345ba4edafeda623f3, type: 3}
-  stairsPrefab: {fileID: 6045948551881990417, guid: ef33cc75b5ead5445a56f0826e055e52, type: 3}
+  floorPrefab: {fileID: 875357711755971279, guid: 48b1fad6b10759740b6e5a62551bd08b, type: 3}
+  wallPrefab: {fileID: 2180386101261304874, guid: 7af18660e77d13742915b8d1b8d59b67, type: 3}
+  doorPrefab: {fileID: 1331469687439935915, guid: 0709a249f0b73d74d921c4de2af58ea3, type: 3}
+  stairsPrefab: {fileID: 4878577439823569669, guid: df45a7b6865db584d9e6ea43f528df28, type: 3}
   roomWidth: 6
   roomHeight: 5
   roomDepth: 6
