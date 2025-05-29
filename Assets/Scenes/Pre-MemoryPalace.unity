@@ -685,6 +685,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1843430106}
+  - component: {fileID: 1843430107}
   m_Layer: 0
   m_Name: HouseBuilder
   m_TagString: Untagged
@@ -707,6 +708,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1843430107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843430105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12e61bc9a924bdb49b3921c815a56941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorPrefab: {fileID: 6447614835294196024, guid: b59fc777398b00a4882180b61ecfd836, type: 3}
+  wallPrefab: {fileID: 6384333911944792548, guid: 31eedc259b1e61c448acdcebf9aaa6e7, type: 3}
+  doorPrefab: {fileID: 3415472457665389115, guid: f14ade22f380f9345ba4edafeda623f3, type: 3}
+  stairsPrefab: {fileID: 6045948551881990417, guid: ef33cc75b5ead5445a56f0826e055e52, type: 3}
+  roomWidth: 6
+  roomHeight: 5
+  roomDepth: 6
+  corridorWidth: 3.5
+  roomsPerFloor: 5
+  floors: 2
 --- !u!1 &1974291182
 GameObject:
   m_ObjectHideFlags: 0
