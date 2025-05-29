@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.InputSystem;
 
 public class VRController : MonoBehaviour
 {
     [SerializeField] private XRController controller;
     [SerializeField] private LineRenderer teleportLine;
     [SerializeField] private LayerMask teleportLayerMask;
+    [SerializeField] private InputActionProperty activateAction;
     
     private bool isTeleporting = false;
     private Vector3 teleportPoint;
@@ -28,7 +30,8 @@ public class VRController : MonoBehaviour
     private void Update()
     {
         // テレポートの処理
-        if (controller.activateAction.action.ReadValue<float>() > 0.1f)
+        float triggerValue = activateAction.action.ReadValue<float>();
+        if (triggerValue > 0.1f)
         {
             if (!isTeleporting)
             {

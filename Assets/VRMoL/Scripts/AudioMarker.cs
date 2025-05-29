@@ -2,24 +2,27 @@ using UnityEngine;
 
 public class AudioMarker : MonoBehaviour
 {
-    [SerializeField] private int wordIndex;
-    [SerializeField] private bool isWordA = true;
+    private AudioClip wordClip;
+    private bool isWordA;
+    
+    public void Setup(AudioClip clip, bool isA)
+    {
+        wordClip = clip;
+        isWordA = isA;
+        
+        // コライダーの設定
+        BoxCollider collider = gameObject.AddComponent<BoxCollider>();
+        collider.isTrigger = true;
+        collider.size = new Vector3(1, 1, 1);
+    }
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (GameManager.Instance != null)
+            if (RoomManager.Instance != null)
             {
-                LocationProfile profile = GameManager.Instance.GetCurrentProfile();
-                if (profile != null)
-                {
-                    AudioClip clip = isWordA ? profile.wordClipA : profile.wordClipB;
-                    GameManager.Instance.PlayWord(clip);
-                    GameManager.Instance.GetComponent<Logger>().LogEvent("WordPlayed", 
-                        GameManager.Instance.GetCurrentLocationIndex(), 
-                        wordIndex);
-                }
+                RoomManager.Instance.PlayWord(wordClip, isWordA);
             }
         }
     }
