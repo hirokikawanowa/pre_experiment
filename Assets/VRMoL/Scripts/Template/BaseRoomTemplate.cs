@@ -4,65 +4,122 @@ namespace VRMoL.Template
 {
     public class BaseRoomTemplate : MonoBehaviour
     {
-        [Header("Room Structure")]
-        public GameObject walls;
-        public GameObject floor;
-        public GameObject ceiling;
-        public GameObject[] doors;
-        public GameObject[] windows;
-
         [Header("Room Settings")]
         public float roomWidth = 5f;
         public float roomLength = 5f;
         public float roomHeight = 3f;
-        public float wallThickness = 0.2f;
 
-        [Header("Audio Settings")]
-        public AudioSource ambientAudioSource;
-        public float reverbLevel = 0.5f;
+        [Header("Materials")]
+        public Material wallMaterial;
+        public Material floorMaterial;
+        public Material ceilingMaterial;
 
-        private void Awake()
+        [Header("Audio")]
+        public AudioClip ambientSound;
+        public float ambientVolume = 0.5f;
+
+        private void Start()
         {
-            // 部屋の基本構造を初期化
-            InitializeRoomStructure();
+            InitializeRoom(gameObject);
         }
 
-        private void InitializeRoomStructure()
+        public virtual void InitializeRoom(GameObject room)
         {
-            // 部屋の基本構造を生成
-            if (walls == null)
-            {
-                walls = new GameObject("Walls");
-                walls.transform.SetParent(transform);
-            }
+            // 部屋の基本構造を作成
+            CreateWalls(room);
+            CreateFloor(room);
+            CreateCeiling(room);
+            CreateDoor(room);
+            CreateWindow(room);
 
-            if (floor == null)
-            {
-                floor = new GameObject("Floor");
-                floor.transform.SetParent(transform);
-            }
+            // 環境音の設定
+            SetupAmbientSound(room);
+        }
 
-            if (ceiling == null)
+        protected virtual void CreateWalls(GameObject room)
+        {
+            // 壁の作成
+            GameObject walls = new GameObject("Walls");
+            walls.transform.SetParent(room.transform);
+
+            // 前の壁
+            CreateWall(walls, new Vector3(0, roomHeight/2, roomLength/2), new Vector3(roomWidth, roomHeight, 0.1f));
+            // 後ろの壁
+            CreateWall(walls, new Vector3(0, roomHeight/2, -roomLength/2), new Vector3(roomWidth, roomHeight, 0.1f));
+            // 左の壁
+            CreateWall(walls, new Vector3(-roomWidth/2, roomHeight/2, 0), new Vector3(0.1f, roomHeight, roomLength));
+            // 右の壁
+            CreateWall(walls, new Vector3(roomWidth/2, roomHeight/2, 0), new Vector3(0.1f, roomHeight, roomLength));
+        }
+
+        protected virtual void CreateWall(GameObject parent, Vector3 position, Vector3 scale)
+        {
+            GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.name = "Wall";
+            wall.transform.SetParent(parent.transform);
+            wall.transform.localPosition = position;
+            wall.transform.localScale = scale;
+
+            // マテリアルの設定
+            MeshRenderer renderer = wall.GetComponent<MeshRenderer>();
+            if (renderer != null && wallMaterial != null)
             {
-                ceiling = new GameObject("Ceiling");
-                ceiling.transform.SetParent(transform);
+                renderer.material = wallMaterial;
             }
         }
 
-        // 部屋のサイズを設定
-        public void SetRoomDimensions(float width, float length, float height)
+        protected virtual void CreateFloor(GameObject room)
         {
-            roomWidth = width;
-            roomLength = length;
-            roomHeight = height;
-            UpdateRoomStructure();
+            GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            floor.name = "Floor";
+            floor.transform.SetParent(room.transform);
+            floor.transform.localPosition = new Vector3(0, 0, 0);
+            floor.transform.localScale = new Vector3(roomWidth, 0.1f, roomLength);
+
+            // マテリアルの設定
+            MeshRenderer renderer = floor.GetComponent<MeshRenderer>();
+            if (renderer != null && floorMaterial != null)
+            {
+                renderer.material = floorMaterial;
+            }
         }
 
-        // 部屋の構造を更新
-        private void UpdateRoomStructure()
+        protected virtual void CreateCeiling(GameObject room)
         {
-            // ここで部屋の構造を更新する処理を実装
-            // 壁、床、天井のサイズや位置を調整
+            GameObject ceiling = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ceiling.name = "Ceiling";
+            ceiling.transform.SetParent(room.transform);
+            ceiling.transform.localPosition = new Vector3(0, roomHeight, 0);
+            ceiling.transform.localScale = new Vector3(roomWidth, 0.1f, roomLength);
+
+            // マテリアルの設定
+            MeshRenderer renderer = ceiling.GetComponent<MeshRenderer>();
+            if (renderer != null && ceilingMaterial != null)
+            {
+                renderer.material = ceilingMaterial;
+            }
+        }
+
+        protected virtual void CreateDoor(GameObject room)
+        {
+            // ドアの作成（後で実装）
+        }
+
+        protected virtual void CreateWindow(GameObject room)
+        {
+            // 窓の作成（後で実装）
+        }
+
+        protected virtual void SetupAmbientSound(GameObject room)
+        {
+            if (ambientSound != null)
+            {
+                AudioSource audioSource = room.AddComponent<AudioSource>();
+                audioSource.clip = ambientSound;
+                audioSource.loop = true;
+                audioSource.volume = ambientVolume;
+                audioSource.Play();
+            }
         }
     }
 } 

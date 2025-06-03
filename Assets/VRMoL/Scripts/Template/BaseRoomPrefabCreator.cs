@@ -36,9 +36,14 @@ namespace VRMoL.Template
             // 部屋を生成
             GameObject room = roomGenerator.GenerateRoom(roomWidth, roomLength, roomHeight);
 
-            // BaseRoomTemplateを追加
+            // BaseRoomTemplateを追加して初期化
             BaseRoomTemplate roomTemplate = room.AddComponent<BaseRoomTemplate>();
-            roomTemplate.SetRoomDimensions(roomWidth, roomLength, roomHeight);
+            roomTemplate.roomWidth = roomWidth;
+            roomTemplate.roomLength = roomLength;
+            roomTemplate.roomHeight = roomHeight;
+            roomTemplate.wallMaterial = wallMaterial;
+            roomTemplate.floorMaterial = floorMaterial;
+            roomTemplate.ceilingMaterial = ceilingMaterial;
 
             // Prefabとして保存
             #if UNITY_EDITOR

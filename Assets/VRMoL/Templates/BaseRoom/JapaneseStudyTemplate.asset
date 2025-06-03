@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f5e41476bafac4db4a3e8a1ee36e4e, type: 3}
+  m_Name: JapaneseStudyTemplate
+  m_EditorClassIdentifier: 
+  locationName: 
+  locationDescription: 
+  wallMaterial: {fileID: 0}
+  floorMaterial: {fileID: 0}
+  ceilingMaterial: {fileID: 0}
+  props: []
+  ambientSound: {fileID: 0}
+  ambientVolume: 0.5
+  ambientLightColor: {r: 1, g: 1, b: 1, a: 1}
+  ambientIntensity: 1
+  lights: []
+  tatamiPrefab: {fileID: 2570731238812499505, guid: 1d0e46e9ca5f12d4683154bcfc449f6a, type: 3}
+  shojiPrefab: {fileID: 2865610791941814840, guid: 9bfca53c6a35dc948a80f8b591b4417c, type: 3}
+  writingDeskPrefab: {fileID: 1840179184610458985, guid: a6598e4279ac6864fb915d9ca2a533c7, type: 3}
+  scrollPrefab: {fileID: 5390071817612804313, guid: 68dbf4f4b5f8fad42b182e6808747d77, type: 3}
+  rainSound: {fileID: 8300000, guid: 4fdb899229e23d74081e405f6376d9c2, type: 3}
+  windChimeSound: {fileID: 8300000, guid: 4fdb899229e23d74081e405f6376d9c2, type: 3}
+  gardenWaterSound: {fileID: 8300000, guid: 4fdb899229e23d74081e405f6376d9c2, type: 3}

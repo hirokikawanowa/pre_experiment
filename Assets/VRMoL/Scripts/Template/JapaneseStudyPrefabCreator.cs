@@ -44,8 +44,9 @@ namespace VRMoL.Template
             // 基本の部屋を生成
             baseCreator.CreateBaseRoomPrefab();
 
-            // 和風書斎のテンプレートを作成
-            JapaneseStudyTemplate template = ScriptableObject.CreateInstance<JapaneseStudyTemplate>();
+            // 和風書斎のテンプレートを追加
+            GameObject room = new GameObject(prefabName);
+            JapaneseStudyTemplate template = room.AddComponent<JapaneseStudyTemplate>();
             template.tatamiPrefab = tatamiPrefab;
             template.shojiPrefab = shojiPrefab;
             template.writingDeskPrefab = writingDeskPrefab;
@@ -54,11 +55,11 @@ namespace VRMoL.Template
             template.windChimeSound = windChimeSound;
             template.gardenWaterSound = gardenWaterSound;
 
-            // テンプレートを保存
+            // Prefabとして保存
             #if UNITY_EDITOR
-            string templatePath = $"{prefabPath}/{prefabName}Template.asset";
-            AssetDatabase.CreateAsset(template, templatePath);
-            AssetDatabase.SaveAssets();
+            string fullPath = $"{prefabPath}/{prefabName}.prefab";
+            PrefabUtility.SaveAsPrefabAsset(room, fullPath);
+            DestroyImmediate(room);
             #endif
         }
     }

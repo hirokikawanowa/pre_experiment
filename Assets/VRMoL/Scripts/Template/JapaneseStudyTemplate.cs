@@ -2,8 +2,7 @@ using UnityEngine;
 
 namespace VRMoL.Template
 {
-    [CreateAssetMenu(menuName = "VRMoL/LocationTemplate/JapaneseStudy")]
-    public class JapaneseStudyTemplate : LocationTemplate
+    public class JapaneseStudyTemplate : BaseRoomTemplate
     {
         [Header("Japanese Study Specific")]
         public GameObject tatamiPrefab;
