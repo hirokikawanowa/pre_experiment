@@ -6,8 +6,7 @@ namespace VRMoL.Core
 {
     public class AudioController : MonoBehaviour
     {
-        [SerializeField] private AudioSource ambientAudioSource;
-        [SerializeField] private AudioSource spatialAudioSource;
+        [SerializeField] private AudioSource audioSource;
         [SerializeField] private float spatialAudioRadius = 1.0f;
 
         private bool isSpatialAudioEnabled = false;
@@ -30,43 +29,32 @@ namespace VRMoL.Core
         {
             isSpatialAudioEnabled = enabled;
             
-            if (ambientAudioSource != null)
+            if (audioSource != null)
             {
-                ambientAudioSource.spatialBlend = enabled ? 1.0f : 0.0f;
-            }
-
-            if (spatialAudioSource != null)
-            {
-                spatialAudioSource.spatialBlend = enabled ? 1.0f : 0.0f;
+                audioSource.spatialBlend = enabled ? 1.0f : 0.0f;
             }
         }
 
-        public void SetAmbientSound(AudioClip clip)
+        public void SetSound(AudioClip clip, Vector3? position = null)
         {
-            if (ambientAudioSource != null && clip != null)
+            if (audioSource != null && clip != null)
             {
-                ambientAudioSource.clip = clip;
-                ambientAudioSource.Play();
-            }
-        }
-
-        public void SetSpatialSound(AudioClip clip, Vector3 position)
-        {
-            if (spatialAudioSource != null && clip != null)
-            {
-                spatialAudioSource.clip = clip;
-                spatialAudioSource.transform.position = position;
-                spatialAudioSource.Play();
+                audioSource.clip = clip;
+                if (position.HasValue)
+                {
+                    audioSource.transform.position = position.Value;
+                }
+                audioSource.Play();
             }
         }
 
         private void Update()
         {
-            if (isSpatialAudioEnabled && playerHead != null && spatialAudioSource != null)
+            if (isSpatialAudioEnabled && playerHead != null && audioSource != null)
             {
                 // プレイヤーの頭の周りに音源を配置
                 Vector3 randomOffset = Random.insideUnitSphere * spatialAudioRadius;
-                spatialAudioSource.transform.position = playerHead.position + randomOffset;
+                audioSource.transform.position = playerHead.position + randomOffset;
             }
         }
     }

@@ -126,7 +126,7 @@ namespace VRMoL.Template
         {
             if (audioController != null && template.ambientSound != null)
             {
-                audioController.SetAmbientSound(template.ambientSound);
+                audioController.SetSound(template.ambientSound);
             }
         }
     }
