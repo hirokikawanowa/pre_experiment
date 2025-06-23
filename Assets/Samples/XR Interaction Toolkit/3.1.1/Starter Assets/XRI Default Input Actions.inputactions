@@ -2535,9 +2535,9 @@
             "actions": [
                 {
                     "name": "Navigate",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "c9a92aca-49d5-4910-8ade-8e994f0a31f0",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -2985,6 +2985,28 @@
                     "name": "",
                     "id": "198e6869-709e-448d-96d4-27186c9d56e6",
                     "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd333a2d-121f-4f53-832d-62af63e0c837",
+                    "path": "XR Controller (RightHand)/triggerButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db753930-2aa8-4dc3-a3fd-653f3b238a28",
+                    "path": "XR Controller (LeftHand)/triggerButton ",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
