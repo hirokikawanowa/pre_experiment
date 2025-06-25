@@ -1,6 +1,7 @@
 using UnityEngine;
 // using UnityEngine.InputSystem; // Input System を使うために必要
 using System.Collections; // コルーチンを使うために必要
+using System.Collections.Generic;
 
 namespace VRMoL.Core
 {
@@ -23,8 +24,18 @@ namespace VRMoL.Core
         // XR Originのコンポーネントを保持
         private CharacterController characterController;
 
-        // 現在どのテレポートポイントにいるかを示すインデックス
-        private int currentIndex = 0;
+        // --- ゲーム状態管理 ---
+        public enum GameState { WaitingToStart, Round1, BreakTime, Round2, Finished }
+        public GameState CurrentState { get; private set; } = GameState.WaitingToStart;
+
+        // --- 訪問順と状態の管理 ---
+        private int visitCount = 0;   // 1始まりにする
+        private readonly List<int> round1Order = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        private readonly List<int> round2Order = new List<int> { 3, 7, 1, 10, 2, 5, 8, 4, 9, 6 };
+
+        // --- 外部コンポーネントへの参照 ---
+        // UIのタイマーをリセットするために使用
+        [SerializeField] private VRMoL.UI.ProgressMenuUI progressMenuUI;
 
         private void Awake()
         {
@@ -39,6 +50,12 @@ namespace VRMoL.Core
                 return;
             }
             */
+
+            if (teleportPoints.Length == 0)
+            {
+                Debug.LogWarning("テレポートポイント(Teleport Points)が1つも設定されていません！", this);
+                return;
+            }
         }
 
         /*
@@ -68,25 +85,133 @@ namespace VRMoL.Core
         // Input Actionから呼び出されるプライベートメソッド
         private void HandleWarpAction(InputAction.CallbackContext context)
         {
-            WarpToNextLocation();
+            // WarpToNextLocation();
         }
         */
 
         // UIボタンなどから呼び出される公開メソッド
-        public void TeleportToNext()
+        public void OnButtonPressed()
         {
-            // テレポートポイントが1つも設定されていない場合は、警告を出して処理を中断します
-            if (teleportPoints.Length == 0)
+            Debug.Log($"[LocationWarpManager] OnButtonPressed called. CurrentState: {CurrentState}, VisitCount: {visitCount}");
+
+            // ProgressMenuUIの参照が切れていたら再取得
+            if (progressMenuUI == null)
             {
-                Debug.LogWarning("テレポートポイント(Teleport Points)が1つも設定されていません！", this);
-                return;
+                progressMenuUI = FindObjectOfType<VRMoL.UI.ProgressMenuUI>();
+                Debug.Log("[LocationWarpManager] progressMenuUI was null, reacquired: " + (progressMenuUI != null));
             }
 
-            // 次の場所のインデックスを計算します。最後の場所なら最初に戻ります。
-            currentIndex = (currentIndex + 1) % teleportPoints.Length;
-            
-            // 安全なテレポート処理を開始します
-            StartCoroutine(WarpSafely(teleportPoints[currentIndex]));
+            switch (CurrentState)
+            {
+                case GameState.WaitingToStart:
+                    Debug.Log("[LocationWarpManager] Starting Round 1");
+                    CurrentState = GameState.Round1;
+                    visitCount = 1;
+
+                    if (progressMenuUI != null)
+                    {
+                        if (!progressMenuUI.gameObject.activeSelf)
+                            progressMenuUI.gameObject.SetActive(true);
+                        if (progressMenuUI.transform.parent != null && !progressMenuUI.transform.parent.gameObject.activeSelf)
+                            progressMenuUI.transform.parent.gameObject.SetActive(true);
+                        progressMenuUI.ResetTimer();
+                        progressMenuUI.StartTimer();
+                        Debug.Log("[LocationWarpManager] Timer reset & started for Round 1");
+                    }
+                    else
+                    {
+                        Debug.LogError("[LocationWarpManager] progressMenuUI is null!");
+                    }
+
+                    TeleportToCurrentLocation();
+                    break;
+
+                case GameState.Round1:
+                    if (visitCount < round1Order.Count)
+                    {
+                        visitCount++;
+                        TeleportToCurrentLocation();
+                    }
+                    else // 10/10でFinishボタンが押された
+                    {
+                        Debug.Log("[LocationWarpManager] Finishing Round 1, entering BreakTime");
+
+                        if (progressMenuUI != null)
+                        {
+                            progressMenuUI.StopTimer();
+                            Debug.Log("[LocationWarpManager] Timer stopped for BreakTime");
+                        }
+
+                        CurrentState = GameState.BreakTime;
+                        visitCount = 0;
+                    }
+                    break;
+
+                case GameState.BreakTime:
+                    Debug.Log("[LocationWarpManager] Starting Round 2");
+                    CurrentState = GameState.Round2;
+                    visitCount = 1;
+
+                    if (progressMenuUI == null)
+                    {
+                        progressMenuUI = FindObjectOfType<VRMoL.UI.ProgressMenuUI>();
+                        Debug.Log("[LocationWarpManager] progressMenuUI was null, reacquired: " + (progressMenuUI != null));
+                    }
+                    if (progressMenuUI != null)
+                    {
+                        if (!progressMenuUI.gameObject.activeSelf)
+                            progressMenuUI.gameObject.SetActive(true);
+                        if (progressMenuUI.transform.parent != null && !progressMenuUI.transform.parent.gameObject.activeSelf)
+                            progressMenuUI.transform.parent.gameObject.SetActive(true);
+                        progressMenuUI.ResetTimer();
+                        progressMenuUI.StartTimer();
+                        Debug.Log("[LocationWarpManager] Timer reset & started for Round 2");
+                    }
+                    else
+                    {
+                        Debug.LogError("[LocationWarpManager] progressMenuUI is null!");
+                    }
+
+                    TeleportToCurrentLocation();
+                    break;
+
+                case GameState.Round2:
+                    if (visitCount < round2Order.Count)
+                    {
+                        visitCount++;
+                        TeleportToCurrentLocation();
+                    }
+                    else // 10/10でFinishボタンが押された
+                    {
+                        Debug.Log("[LocationWarpManager] Finishing Round 2");
+
+                        if (progressMenuUI != null)
+                        {
+                            progressMenuUI.StopTimer();
+                            Debug.Log("[LocationWarpManager] Timer stopped for Finished state");
+                        }
+
+                        CurrentState = GameState.Finished;
+                        visitCount = 0;
+                    }
+                    break;
+
+                case GameState.Finished:
+                    Debug.Log("[LocationWarpManager] Game is already finished");
+                    // 何もしない
+                    break;
+            }
+        }
+
+        private void TeleportToCurrentLocation()
+        {
+            List<int> currentOrder = (CurrentState == GameState.Round1) ? round1Order : round2Order;
+            int idx = visitCount - 1;
+            if (idx < 0 || idx >= currentOrder.Count) return;
+            int nextLocationNumber = currentOrder[idx];
+            int teleportPointIndex = nextLocationNumber - 1;
+            if (teleportPointIndex < 0 || teleportPointIndex >= teleportPoints.Length) return;
+            StartCoroutine(WarpSafely(teleportPoints[teleportPointIndex]));
         }
 
         // CharacterControllerを考慮した安全なテレポート処理
@@ -111,11 +236,18 @@ namespace VRMoL.Core
             yield return null;
             characterController.enabled = true;
 
-            Debug.Log($"テレポート成功: {currentIndex + 1}番目のポイント ({destination.name}) へ移動しました。", this);
+            Debug.Log($"テレポート成功: {visitCount}/{GetTotalPoints()} ({destination.name}) へ移動しました。 (State: {CurrentState})", this);
         }
 
         // --- 外部から情報を取得するためのオプショナルなメソッド ---
-        public int GetCurrentPointIndex() => currentIndex + 1;
-        public int GetTotalPoints() => teleportPoints.Length;
+        public int GetCurrentVisitCount() => visitCount;
+        public int GetTotalPoints()
+        {
+            if (CurrentState == GameState.Round1 || CurrentState == GameState.BreakTime)
+                return round1Order.Count;
+            if (CurrentState == GameState.Round2 || CurrentState == GameState.Finished)
+                return round2Order.Count;
+            return 0;
+        }
     }
 } 
