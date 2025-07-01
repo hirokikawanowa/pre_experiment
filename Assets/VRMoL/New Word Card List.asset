@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2e50f71f948cdd4b8c65ec8b8d3d763, type: 3}
+  m_Name: New Word Card List
+  m_EditorClassIdentifier: 
+  cards:
+  - word: Ankle
+    image: {fileID: 21300000, guid: 52078ab724dcdff4f90fbea351ab217a, type: 3}
+  - word: Apple
+    image: {fileID: 21300000, guid: d47702d3cf293474dbc556d5e2de4474, type: 3}
+  - word: Autumn
+    image: {fileID: 21300000, guid: b83638011cb3e944b91c0723428c0590, type: 3}
+  - word: Barrel
+    image: {fileID: 21300000, guid: efe72f5e897b0b74e95da0116abb90de, type: 3}
+  - word: Basket
+    image: {fileID: 21300000, guid: 68ead8ec44c8a8544b6b983607070fac, type: 3}
+  - word: Beam
+    image: {fileID: 21300000, guid: 9b304c9b1a593a148af36bf92169eefc, type: 3}
+  - word: Beard
+    image: {fileID: 21300000, guid: 307f510d5fe8a9045a660c44c45623d1, type: 3}
+  - word: Bolt
+    image: {fileID: 21300000, guid: 553e9a0ae9c5ab341b9abb0156ddcb37, type: 3}
+  - word: Bone
+    image: {fileID: 21300000, guid: f4214a8e8a5c45b48b8148e76c0996b8, type: 3}
+  - word: Burial
+    image: {fileID: 21300000, guid: 839acc7be7b61cc49a7f90aab4f87ecd, type: 3}
+  - word: Button
+    image: {fileID: 21300000, guid: 37685478ddfb7104bac9c831b0d4d0d1, type: 3}
+  - word: Canal
+    image: {fileID: 21300000, guid: 988252e2f2f5bf54a9a2ce27243c3a68, type: 3}
+  - word: Card
+    image: {fileID: 21300000, guid: 49cae92efa29b414194d357f847e31f4, type: 3}
+  - word: Cart
+    image: {fileID: 21300000, guid: d5f4f6df62657cc4c878fdb281bcf98a, type: 3}
+  - word: Cave
+    image: {fileID: 21300000, guid: 61541a400cf23ff4cb07a4d24a8101be, type: 3}
+  - word: Chapel
+    image: {fileID: 21300000, guid: 6754c856c703f224e80f0f3a1f2fa51d, type: 3}
+  - word: Cherry
+    image: {fileID: 21300000, guid: 14d36bb4b5d808b49b154ec4527e0747, type: 3}
+  - word: Cigar
+    image: {fileID: 21300000, guid: 349a1a852d083bc498cc4fee78636261, type: 3}
+  - word: Crest
+    image: {fileID: 21300000, guid: 9b0fd374ad3604843902c208add78480, type: 3}
+  - word: Crowd
+    image: {fileID: 21300000, guid: 6330094cde5dcc84991b441eb68a3ef5, type: 3}
+  - word: Deer
+    image: {fileID: 21300000, guid: b4bb49bf2cd683c4781bb16e37ef10b3, type: 3}
+  - word: Devil
+    image: {fileID: 21300000, guid: b308156407f91754bacce4f9b5610f1a, type: 3}
+  - word: Disc
+    image: {fileID: 21300000, guid: 48e0e81ed0c85214cb41e9654a5d4336, type: 3}
+  - word: Drive
+    image: {fileID: 21300000, guid: eec5cb059a708eb4499df7b9c41af7a9, type: 3}
+  - word: Drum
+    image: {fileID: 21300000, guid: 2ee79ac9b9ac9a64ebb0fe9955afae90, type: 3}
+  - word: Essay
+    image: {fileID: 21300000, guid: 2b1ef16aaf11875438845f8550cce657, type: 3}
+  - word: Feast
+    image: {fileID: 21300000, guid: 265cda996a621314388a1bde6a474939, type: 3}
+  - word: Flame
+    image: {fileID: 21300000, guid: e8e80ada49131d14c9f89fe43288ee5c, type: 3}
+  - word: Gate
+    image: {fileID: 21300000, guid: 62658d1eb462ffa45b7c5415499a43e4, type: 3}
+  - word: Hammer
+    image: {fileID: 21300000, guid: 2d860cc82cfe584439afa13f3b8e2b4f, type: 3}
+  - word: Helmet
+    image: {fileID: 21300000, guid: 9dbd832df72019c41bb169999c5a0159, type: 3}
+  - word: Infant
+    image: {fileID: 21300000, guid: 21ca3337b04965d4eae2cd2116c31594, type: 3}
+  - word: Lace
+    image: {fileID: 21300000, guid: ab20e7381a21b0645b36218128328772, type: 3}
+  - word: Ladies
+    image: {fileID: 21300000, guid: 9bea4b0376f584c48ad340a0de81ac03, type: 3}
+  - word: Meal
+    image: {fileID: 21300000, guid: aa5b295f1a540a046bbc354b4f7d510b, type: 3}
+  - word: Museum
+    image: {fileID: 21300000, guid: 9904eb04bf999d148be88af3a907041a, type: 3}
+  - word: Onion
+    image: {fileID: 21300000, guid: 813562017ec87a64fb1ecba278c8c72a, type: 3}
+  - word: Riot
+    image: {fileID: 21300000, guid: 4a0e3379f85017b4f936c7909c3c0a18, type: 3}
+  - word: Roast
+    image: {fileID: 21300000, guid: 2c308e7f213b46349a4413c479d50ed4, type: 3}
+  - word: Rose
+    image: {fileID: 21300000, guid: f0bb67c693789ea4d9535e0f250f5441, type: 3}
+  - word: Salt
+    image: {fileID: 21300000, guid: d427ed07fbc33fe49860a118613e5363, type: 3}
+  - word: Scarf
+    image: {fileID: 21300000, guid: 7f31e4429b01f514689235ac6811d1cf, type: 3}
+  - word: Sponge
+    image: {fileID: 21300000, guid: 78015bc185726e84a9a0466d0de217c4, type: 3}
+  - word: Stable
+    image: {fileID: 21300000, guid: bf71f7e5d28c1d4469e9a7e8a43a624d, type: 3}
+  - word: Tail
+    image: {fileID: 21300000, guid: e89b3e8365d024e49a4aa729dffbfb60, type: 3}
+  - word: Tank
+    image: {fileID: 21300000, guid: 0a41402904924304c8820a5c258fa34a, type: 3}
+  - word: Toilet
+    image: {fileID: 21300000, guid: 3fbd12308cd4ed74a9b041fa9c771fe5, type: 3}
+  - word: Tongue
+    image: {fileID: 21300000, guid: 49033fb966c05a241848537e5b7bbaa3, type: 3}
+  - word: Twin
+    image: {fileID: 21300000, guid: 19adc2a6922b38048adeb68715c40fce, type: 3}
+  - word: Wound
+    image: {fileID: 21300000, guid: 63284f409d6d0aa4cb900c95c988c977, type: 3}

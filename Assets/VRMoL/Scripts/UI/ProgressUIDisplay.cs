@@ -15,15 +15,14 @@ namespace VRMoL.UI
         [SerializeField] private Button previousButton;
         [SerializeField] private Button closeButton;
 
-        private LocationManager locationManager;
         private bool isVisible = false;
 
         private void Start()
         {
-            locationManager = FindObjectOfType<LocationManager>();
-            if (locationManager == null)
+            // GameManager依存に変更
+            if (VRMoL.Core.GameManager.Instance == null)
             {
-                Debug.LogError("LocationManager not found!");
+                Debug.LogError("GameManager not found!");
                 return;
             }
 
@@ -66,15 +65,16 @@ namespace VRMoL.UI
 
         private void UpdateProgressDisplay()
         {
-            if (locationManager == null) return;
+            if (VRMoL.Core.GameManager.Instance == null) return;
 
-            int currentLocation = locationManager.GetCurrentLocationIndex();
-            int totalLocations = locationManager.GetTotalLocations();
+            int currentLocation = VRMoL.Core.GameManager.Instance.GetCurrentLocationIndex() + 1; // 1始まり表示
+            int totalLocations = 10; // 定数でOK
+            int currentRound = VRMoL.Core.GameManager.Instance.GetCurrentRound();
 
             // ロケーション情報の更新
             if (locationText != null)
             {
-                locationText.text = $"現在のロケーション: {currentLocation} / {totalLocations}";
+                locationText.text = $"ラウンド: {currentRound}　ロケーション: {currentLocation} / {totalLocations}";
             }
 
             // 進捗バーの更新
@@ -104,13 +104,17 @@ namespace VRMoL.UI
 
         private void OnNextButtonClicked()
         {
-            locationManager.LoadNextLocation();
-            UpdateProgressDisplay();
+            if (VRMoL.Core.GameManager.Instance != null)
+            {
+                VRMoL.Core.GameManager.Instance.NextLocation();
+                UpdateProgressDisplay();
+            }
         }
 
         private void OnPreviousButtonClicked()
         {
-            locationManager.LoadPreviousLocation();
+            // 必要ならGameManagerに前のロケーションへ戻る処理を追加
+            Debug.Log("前のロケーションへは未対応");
             UpdateProgressDisplay();
         }
 

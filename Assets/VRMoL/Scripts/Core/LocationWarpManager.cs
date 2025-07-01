@@ -26,7 +26,7 @@ namespace VRMoL.Core
 
         // --- ゲーム状態管理 ---
         public enum GameState { WaitingToStart, Round1, BreakTime, Round2, Finished }
-        public GameState CurrentState { get; private set; } = GameState.WaitingToStart;
+        public GameState CurrentState { get; set; } = GameState.WaitingToStart;
 
         // --- 訪問順と状態の管理 ---
         private int visitCount = 0;   // 1始まりにする
@@ -36,6 +36,16 @@ namespace VRMoL.Core
         // --- 外部コンポーネントへの参照 ---
         // UIのタイマーをリセットするために使用
         [SerializeField] private VRMoL.UI.ProgressMenuUI progressMenuUI;
+        [SerializeField] private VRMoL.Core.AudioController audioController;
+
+        // 追加: 1周目の空間/非空間オーディオ設定
+        private bool isRound1Spatial = true;
+
+        public int CurrentLocationIndex { get; private set; } = 0;
+
+        // --- ロケーション入退室ログ用 ---
+        private float lastEnterTime = 0f;
+        private int lastLocationIndex = -1;
 
         private void Awake()
         {
@@ -98,7 +108,6 @@ namespace VRMoL.Core
             if (progressMenuUI == null)
             {
                 progressMenuUI = FindObjectOfType<VRMoL.UI.ProgressMenuUI>();
-                Debug.Log("[LocationWarpManager] progressMenuUI was null, reacquired: " + (progressMenuUI != null));
             }
 
             switch (CurrentState)
@@ -106,7 +115,7 @@ namespace VRMoL.Core
                 case GameState.WaitingToStart:
                     Debug.Log("[LocationWarpManager] Starting Round 1");
                     CurrentState = GameState.Round1;
-                    visitCount = 1;
+                    visitCount = 0;
 
                     if (progressMenuUI != null)
                     {
@@ -123,13 +132,26 @@ namespace VRMoL.Core
                         Debug.LogError("[LocationWarpManager] progressMenuUI is null!");
                     }
 
+                    // 追加: 1周目の空間/非空間をランダム決定し反映
+                    isRound1Spatial = Random.value > 0.5f;
+                    if (audioController != null)
+                    {
+                        audioController.SetSpatialAudio(isRound1Spatial);
+                        audioController.PlayLocationAudio(0);
+                    }
+
                     TeleportToCurrentLocation();
+
+                    // 状態変更後にGameManagerに通知
+                    if (VRMoL.Core.GameManager.Instance != null)
+                    {
+                        VRMoL.Core.GameManager.Instance.NextLocation();
+                    }
                     break;
 
                 case GameState.Round1:
                     if (visitCount < round1Order.Count)
                     {
-                        visitCount++;
                         TeleportToCurrentLocation();
                     }
                     else // 10/10でFinishボタンが押された
@@ -142,6 +164,18 @@ namespace VRMoL.Core
                             Debug.Log("[LocationWarpManager] Timer stopped for BreakTime");
                         }
 
+                        // 1周目終了時に全カードを即時削除
+                        if (VRMoL.Core.GameManager.Instance != null)
+                        {
+                            VRMoL.Core.GameManager.Instance.ClearAllCardsAllLocations();
+                        }
+
+                        // 追加: 1周目終了時に全環境音を停止
+                        if (audioController != null)
+                        {
+                            audioController.StopAllLocationAudio();
+                        }
+
                         CurrentState = GameState.BreakTime;
                         visitCount = 0;
                     }
@@ -150,7 +184,12 @@ namespace VRMoL.Core
                 case GameState.BreakTime:
                     Debug.Log("[LocationWarpManager] Starting Round 2");
                     CurrentState = GameState.Round2;
-                    visitCount = 1;
+                    visitCount = 0;
+
+                    if (VRMoL.Core.GameManager.Instance != null)
+                    {
+                        VRMoL.Core.GameManager.Instance.OnRoundChanged(2);
+                    }
 
                     if (progressMenuUI == null)
                     {
@@ -172,13 +211,18 @@ namespace VRMoL.Core
                         Debug.LogError("[LocationWarpManager] progressMenuUI is null!");
                     }
 
+                    // 追加: 2周目は1周目と逆の空間/非空間を反映
+                    if (audioController != null)
+                    {
+                        audioController.SetSpatialAudio(!isRound1Spatial);
+                    }
+
                     TeleportToCurrentLocation();
                     break;
 
                 case GameState.Round2:
                     if (visitCount < round2Order.Count)
                     {
-                        visitCount++;
                         TeleportToCurrentLocation();
                     }
                     else // 10/10でFinishボタンが押された
@@ -189,6 +233,12 @@ namespace VRMoL.Core
                         {
                             progressMenuUI.StopTimer();
                             Debug.Log("[LocationWarpManager] Timer stopped for Finished state");
+                        }
+
+                        // 追加: 2周目終了時に全環境音を停止
+                        if (audioController != null)
+                        {
+                            audioController.StopAllLocationAudio();
                         }
 
                         CurrentState = GameState.Finished;
@@ -205,13 +255,58 @@ namespace VRMoL.Core
 
         private void TeleportToCurrentLocation()
         {
-            List<int> currentOrder = (CurrentState == GameState.Round1) ? round1Order : round2Order;
-            int idx = visitCount - 1;
-            if (idx < 0 || idx >= currentOrder.Count) return;
-            int nextLocationNumber = currentOrder[idx];
-            int teleportPointIndex = nextLocationNumber - 1;
-            if (teleportPointIndex < 0 || teleportPointIndex >= teleportPoints.Length) return;
-            StartCoroutine(WarpSafely(teleportPoints[teleportPointIndex]));
+            // ロケーション退室ログ（ワープ前）
+            if (lastLocationIndex >= 0)
+            {
+                var logger = FindObjectOfType<VRMoL.UI.Logger>();
+                var gm = VRMoL.Core.GameManager.Instance;
+                if (logger != null && gm != null)
+                {
+                    int round = gm.GetCurrentRound();
+                    string location = $"Location{lastLocationIndex + 1}";
+                    float stayTime = Time.time - lastEnterTime;
+                    logger.LogLocationExit(round, location, stayTime);
+                }
+            }
+
+            // visitCountをワープ前にインクリメント
+            visitCount++;
+
+            // ワープ先ロケーションのインデックスを計算
+            int locationIndex = -1;
+            List<int> order = (CurrentState == GameState.Round1) ? round1Order : round2Order;
+            if (visitCount > 0 && visitCount <= order.Count)
+            {
+                locationIndex = order[visitCount - 1] - 1; // 0-based index
+            }
+            CurrentLocationIndex = locationIndex;
+
+            // ロケーション入室ログ（ワープ直後）
+            if (locationIndex >= 0)
+            {
+                var logger = FindObjectOfType<VRMoL.UI.Logger>();
+                var gm = VRMoL.Core.GameManager.Instance;
+                if (logger != null && gm != null)
+                {
+                    int round = gm.GetCurrentRound();
+                    string location = $"Location{locationIndex + 1}";
+                    logger.LogLocationEnter(round, location);
+                }
+                lastEnterTime = Time.time;
+                lastLocationIndex = locationIndex;
+            }
+
+            // ワープ処理
+            if (locationIndex >= 0 && locationIndex < teleportPoints.Length)
+            {
+                StartCoroutine(WarpSafely(teleportPoints[locationIndex]));
+            }
+
+            // ワープ直後にGameManagerに通知
+            if (VRMoL.Core.GameManager.Instance != null && locationIndex >= 0)
+            {
+                VRMoL.Core.GameManager.Instance.OnLocationChanged(locationIndex);
+            }
         }
 
         // CharacterControllerを考慮した安全なテレポート処理
@@ -236,6 +331,13 @@ namespace VRMoL.Core
             yield return null;
             characterController.enabled = true;
 
+            // 修正: 正しいロケーションindexで音声切り替え
+            if (audioController != null)
+            {
+                int locationIndex = GetCurrentLocationIndex();
+                audioController.PlayLocationAudio(locationIndex);
+            }
+
             Debug.Log($"テレポート成功: {visitCount}/{GetTotalPoints()} ({destination.name}) へ移動しました。 (State: {CurrentState})", this);
         }
 
@@ -248,6 +350,26 @@ namespace VRMoL.Core
             if (CurrentState == GameState.Round2 || CurrentState == GameState.Finished)
                 return round2Order.Count;
             return 0;
+        }
+
+        public int GetCurrentLocationIndex()
+        {
+            List<int> currentOrder = (CurrentState == GameState.Round1) ? round1Order : round2Order;
+            int idx = visitCount - 1;
+            if (idx < 0 || idx >= currentOrder.Count) return 0;
+            // ロケーション番号（1始まり）→配列index（0始まり）に変換
+            return currentOrder[idx] - 1;
+        }
+
+        // --- 追加: 現在のラウンド順を取得するpublicメソッド ---
+        public List<int> GetCurrentRoundOrder()
+        {
+            return (CurrentState == GameState.Round1) ? round1Order : round2Order;
+        }
+
+        public void SetVisitCount(int count)
+        {
+            visitCount = count;
         }
     }
 } 

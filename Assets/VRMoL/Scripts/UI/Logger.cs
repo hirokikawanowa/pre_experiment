@@ -83,10 +83,45 @@ namespace VRMoL.UI
             LogEvent("LocationChange", toLocation, data);
         }
 
-        public void LogAudioModeChange(string location, bool isSpatialAudio)
+        public void LogAudioModeChange(int roundNumber, string location, bool isSpatialAudio)
         {
-            string data = $"SpatialAudio:{isSpatialAudio}";
+            string data = $"Round={roundNumber},SpatialAudio={isSpatialAudio}";
             LogEvent("AudioModeChange", location, data);
+        }
+
+        // タスク開始の記録
+        public void LogTaskStart(int roundNumber)
+        {
+            string data = $"Round={roundNumber}";
+            LogEvent("TaskStart", "-", data);
+        }
+
+        // タスク終了の記録
+        public void LogTaskEnd(int roundNumber, float duration)
+        {
+            string data = $"Round={roundNumber},Duration={duration:F2}";
+            LogEvent("TaskEnd", "-", data);
+        }
+
+        // ロケーション入室の記録
+        public void LogLocationEnter(int roundNumber, string location)
+        {
+            string data = $"Round={roundNumber}";
+            LogEvent("LocationEnter", location, data);
+        }
+
+        // ロケーション退室の記録
+        public void LogLocationExit(int roundNumber, string location, float stayTime)
+        {
+            string data = $"Round={roundNumber},StayTime={stayTime:F2}";
+            LogEvent("LocationExit", location, data);
+        }
+
+        // カード配置の詳細記録
+        public void LogCardPlacement(int roundNumber, string location, string cardId, int wordIndex, int orderInLocation, Vector3 position, Quaternion rotation)
+        {
+            string data = $"Round={roundNumber},CardID={cardId},WordIndex={wordIndex},OrderInLocation={orderInLocation},Position=({position.x:F2},{position.y:F2},{position.z:F2}),Rotation=({rotation.x:F2},{rotation.y:F2},{rotation.z:F2},{rotation.w:F2})";
+            LogEvent("CardPlacement", location, data);
         }
 
         private void OnDestroy()

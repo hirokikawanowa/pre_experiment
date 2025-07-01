@@ -74,9 +74,9 @@ namespace VRMoL.UI
                 nextButton.onClick.RemoveAllListeners();
                 nextButton.onClick.AddListener(() => {
                     if (debugMode) Debug.Log("[ProgressMenuUI] Next button clicked in VR");
-                    if (!isTimerRunning && warpManager.CurrentState == LocationWarpManager.GameState.WaitingToStart)
+                    if (VRMoL.Core.GameManager.Instance != null)
                     {
-                        StartTimer();
+                        VRMoL.Core.GameManager.Instance.NextLocation();
                     }
                     warpManager.OnButtonPressed();
                 });

@@ -15,6 +15,11 @@ public class MenuInputController : MonoBehaviour
 
     private void OnEnable()
     {
+        if (inputActions == null)
+        {
+            inputActions = new PlayerInputActions();
+            inputActions.UI.Menu.performed += OnMenuButton;
+        }
         inputActions.UI.Enable();
     }
 
