@@ -203,7 +203,7 @@ namespace VRMoL.UI
             {
                 StopCoroutine(timerCoroutine);
                 timerCoroutine = null;
-                Debug.Log("[ProgressMenuUI] timerCoroutine stopped in StopTimer()");
+                if (debugMode) Debug.Log("[ProgressMenuUI] timerCoroutine stopped in StopTimer()");
             }
             if (debugMode) Debug.Log("[ProgressMenuUI] Timer stopped");
         }
@@ -325,6 +325,14 @@ namespace VRMoL.UI
                         if (progressText != null) progressText.text = "All rounds completed!";
                         if (nextButton != null) nextButton.interactable = false;
                         StopTimer();
+                        var logger = FindObjectOfType<VRMoL.UI.Logger>();
+                        var logExporter = FindObjectOfType<VRMoL.UI.LogExporter>();
+                        if (logger != null && logExporter != null)
+                        {
+                            string json = logger.GetLogJsonArray();
+                            Debug.Log("[DEBUG-GAS] 送信内容: " + json);
+                            logExporter.StartCoroutine(logExporter.SendLogToGAS(json));
+                        }
                         break;
                 }
             }

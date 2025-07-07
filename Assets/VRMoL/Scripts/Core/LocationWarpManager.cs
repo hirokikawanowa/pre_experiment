@@ -102,6 +102,8 @@ namespace VRMoL.Core
         // UIボタンなどから呼び出される公開メソッド
         public void OnButtonPressed()
         {
+            var logger = FindObjectOfType<VRMoL.UI.Logger>();
+            var gm = VRMoL.Core.GameManager.Instance;
             Debug.Log($"[LocationWarpManager] OnButtonPressed called. CurrentState: {CurrentState}, VisitCount: {visitCount}");
 
             // ProgressMenuUIの参照が切れていたら再取得
@@ -164,6 +166,15 @@ namespace VRMoL.Core
                             Debug.Log("[LocationWarpManager] Timer stopped for BreakTime");
                         }
 
+                        // 1周目終了時に最後のLocationExitログを出力
+                        if (logger != null && gm != null && lastLocationIndex >= 0)
+                        {
+                            int round = gm.GetCurrentRound();
+                            string location = $"Location{lastLocationIndex + 1}";
+                            float stayTime = Time.time - lastEnterTime;
+                            logger.LogLocationExit(round, location, stayTime);
+                        }
+
                         // 1周目終了時に全カードを即時削除
                         if (VRMoL.Core.GameManager.Instance != null)
                         {
@@ -186,9 +197,16 @@ namespace VRMoL.Core
                     CurrentState = GameState.Round2;
                     visitCount = 0;
 
-                    if (VRMoL.Core.GameManager.Instance != null)
+                    if (gm != null)
                     {
-                        VRMoL.Core.GameManager.Instance.OnRoundChanged(2);
+                        gm.OnRoundChanged(2);
+                    }
+
+                    // 2周目開始ログをここで出力
+                    if (logger != null)
+                    {
+                        logger.LogTaskStart(2); // 2周目開始
+                        logger.LogAudioModeChange(2, "---", !isRound1Spatial); // 2周目のSpatialAudio状態
                     }
 
                     if (progressMenuUI == null)
@@ -240,6 +258,29 @@ namespace VRMoL.Core
                         {
                             audioController.StopAllLocationAudio();
                         }
+
+                        // --- ここで最後のLocationExitログを出力 ---
+                        if (logger != null && gm != null && lastLocationIndex >= 0)
+                        {
+                            int round = gm.GetCurrentRound();
+                            string location = $"Location{lastLocationIndex + 1}";
+                            float stayTime = Time.time - lastEnterTime;
+                            logger.LogLocationExit(round, location, stayTime);
+                        }
+
+                        // --- ここからGoogleフォーム送信処理 ---
+                        var logExporter = FindObjectOfType<VRMoL.UI.LogExporter>();
+                        if (logger != null && logExporter != null)
+                        {
+                            string logText = logger.GetAllLogText();
+                            logExporter.StartCoroutine(logExporter.SendLogToGAS(logText));
+                            Debug.Log("[LocationWarpManager] GAS送信開始");
+                        }
+                        else
+                        {
+                            Debug.LogWarning("[LocationWarpManager] LoggerまたはLogExporterが見つかりませんでした。");
+                        }
+                        // --- ここまで ---
 
                         CurrentState = GameState.Finished;
                         visitCount = 0;

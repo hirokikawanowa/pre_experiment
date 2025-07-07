@@ -125,10 +125,7 @@ namespace VRMoL.Core
 
         public int GetCurrentRound()
         {
-            if (warpManager == null) return 1;
-            var state = warpManager.CurrentState;
-            if (state == LocationWarpManager.GameState.Round2) return 2;
-            return 1;
+            return currentRound;
         }
 
         public int GetCurrentLocationIndex()

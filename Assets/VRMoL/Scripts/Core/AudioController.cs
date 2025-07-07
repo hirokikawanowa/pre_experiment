@@ -57,13 +57,12 @@ namespace VRMoL.Core
 
             // Loggerで音声モード切替を記録
             var logger = FindObjectOfType<VRMoL.UI.Logger>();
-            var gm = FindObjectOfType<VRMoL.Core.GameManager>();
+            var gm = VRMoL.Core.GameManager.Instance;
             if (logger != null && gm != null)
             {
                 int round = gm.GetCurrentRound();
-                int locIdx = gm.GetCurrentLocationIndex();
-                string location = $"Location{locIdx + 1}";
-                logger.LogAudioModeChange(round, location, enabled);
+                // 2周目（Round2）でSpatialAudioが切り替わった場合、round=2で出力される
+                logger.LogAudioModeChange(round, "---", enabled);
             }
         }
 

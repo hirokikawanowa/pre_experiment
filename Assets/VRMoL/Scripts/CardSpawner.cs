@@ -80,18 +80,14 @@ public class CardSpawner : MonoBehaviour
             var cardData = selectedCards[currentCardIndex];
             var gm = VRMoL.Core.GameManager.Instance;
             int round = gm != null ? gm.GetCurrentRound() : 1;
-            int location = gm != null ? gm.GetCurrentLocationIndex() + 1 : 0;
-            int wordIndex = 0;
-            // WordCardDataにindexプロパティがあれば取得
-            if (cardData.GetType().GetProperty("index") != null)
-            {
-                wordIndex = (int)cardData.GetType().GetProperty("index").GetValue(cardData);
-            }
+            int locationIndex = gm != null ? gm.GetCurrentLocationIndex() : 0;
+            string location = $"Location{locationIndex + 1}";
+            int wordIndex = currentCardIndex;
             int orderInLocation = currentCardIndex + 1;
 
             logger.LogCardPlacement(
                 round,
-                $"Location{location}",
+                location,
                 cardData.word,
                 wordIndex,
                 orderInLocation,
