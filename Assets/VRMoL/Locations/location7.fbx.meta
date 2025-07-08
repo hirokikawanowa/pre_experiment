@@ -3,7 +3,47 @@ guid: b31b82a09551cca48853486b0d99c42b
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fieldstone_Moss_Material
+    second: {fileID: 2100000, guid: eea811ebc3dc6d443bb7fb35868ec6f5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_33369fa9-47d3-46de-ab37-f41d72a733db
+    second: {fileID: 2100000, guid: cbfbc4681a15d2646b843ad0cc14c0cf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_38d183c5-5948-4da3-8330-6fe8f496b478
+    second: {fileID: 2100000, guid: 19663d672ec4e2841b0f91792531c5b3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_44efe62e-2190-41fe-a4cb-0a45162dd879
+    second: {fileID: 2100000, guid: ea259611c087a4648a07ad6460f5af01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_7098463a-b55d-4de1-b10e-dee0e4141663
+    second: {fileID: 2100000, guid: ee6ef91104c617541a7afe13bc57fe0a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_8cc6986d-6f2c-4aa3-8966-10a8126ef466
+    second: {fileID: 2100000, guid: 5ee370cae8d68594baa53d1fad60f44e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_8fd40a8a-e9b7-4e96-9102-e571b5156933
+    second: {fileID: 2100000, guid: 1eb13853b6f27314898554f91d0f7cba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_9f76ccc0-5165-48d0-84f0-1e00f3b68ecb
+    second: {fileID: 2100000, guid: fc64cd5ea468b4149b8cd6f6909ad1dc, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

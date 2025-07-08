@@ -3,7 +3,47 @@ guid: 8c0b481e6bcbfc347923874ccba25bf6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_16bf32e5-671b-4c19-a979-a334bae6a3bb
+    second: {fileID: 2100000, guid: 62848b9fddd1e4640bc46053edfce457, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_649da143-83df-4212-973d-f6a60b28cc70
+    second: {fileID: 2100000, guid: f60c0cfca34940143bbf19998b13d58a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_87950421-d419-4c1a-9832-1c0e25f3e59a
+    second: {fileID: 2100000, guid: 47cbfbca062e2fb458cb2e8ffc4c004d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_90fe1e85-256a-42d5-b891-5931d4664924
+    second: {fileID: 2100000, guid: dc2786706ea05b04a82e5164d5550ea8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_adf120aa-664b-4f78-82b5-f2865402df40
+    second: {fileID: 2100000, guid: e98c8a61a0f76ae45b2a8411244c593a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_d9c2311a-7526-4152-9194-b7ae7875cf15
+    second: {fileID: 2100000, guid: 1a6d68f35bb11f84ea479a88cd2717c9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_eb56a794-60a1-4ec9-bc75-017139abd77b
+    second: {fileID: 2100000, guid: bd2508d56cc85034fa1fa7de50c5ddfd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_f61c0e3c-def3-44c9-9d65-3544b0273e76
+    second: {fileID: 2100000, guid: bd36c7668fc8f9a438e8c9821ba9fa63, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

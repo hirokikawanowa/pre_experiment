@@ -3,7 +3,37 @@ guid: 0ca527dc76af3db4bb8590d64f461b8e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_19699a6a-15da-4c9f-ac14-9461010b5212
+    second: {fileID: 2100000, guid: 17ebf5d0043828c48891e3a11eb87832, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_49fb1390-efb6-4204-983c-c4c6aa77ac05
+    second: {fileID: 2100000, guid: 108138ca494a3204f8b1dce1f52ab8c0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_4b466d50-e16d-48be-85d1-b7c0e48b6633
+    second: {fileID: 2100000, guid: f40dd7aed3d0a91448bfb29182b5825e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_9793a966-00f1-4cea-9a42-4f6d8527c737
+    second: {fileID: 2100000, guid: 0b76874c00d2aa9408c254f68440ce7d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_acf4217a-49f7-400d-8655-c41a32fc8a2b
+    second: {fileID: 2100000, guid: c0ca1ce9310dc38499a752f77e52916e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tripo_material_d82f4576-f467-45dd-9cda-fa62157a113f
+    second: {fileID: 2100000, guid: 6eafc287755237a429c2b377a1ef3cc0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
